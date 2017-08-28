@@ -1,0 +1,27 @@
+{
+  "name": "react-native-common-ui-components",
+  "version": "1.0.0",
+  "description": "UI components that are commonly used in RN projects.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "core-decorators": "latest",
+    "babel-plugin-transform-decorators-legacy": "latest",
+    "react-native-common-utils": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RobinBobin/react-native-common-ui-components.git"
+  },
+  "keywords": [
+    "ui components"
+  ],
+  "author": "Ruben Shalimov <r_shalimov@inbox.ru>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RobinBobin/react-native-common-ui-components/issues"
+  },
+  "homepage": "https://github.com/RobinBobin/react-native-common-ui-components#readme"
+}

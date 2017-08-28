@@ -10,7 +10,7 @@ Some UI components that are commonly used in RN projects.
 #### <a name="toggleButtons"></a>[ToggleButtons<i class="icon-up"></i>](#ctoggleButtons)
 #### <a name="button"></a>[Button<i class="icon-up"></i>](#cbutton)
 #### <a name="materialSwitch"></a>[MaterialSwitch<i class="icon-up"></i>](#cmaterialSwitch)
-#### <a name="progressBar"></a>[ProgressBar<i class="icon-up"></i>](#progressBar)
+#### <a name="progressBar"></a>[ProgressBar<i class="icon-up"></i>](#cprogressBar)
 
 ### Version history
 

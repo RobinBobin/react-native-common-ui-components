@@ -4,6 +4,7 @@ import Button from "./js/Button";
 import ToggleButtons from "./js/ToggleButtons/ToggleButtons";
 import ImageToggleButton from "./js/ToggleButtons/ImageToggleButton";
 import TextToggleButton from "./js/ToggleButtons/TextToggleButton";
+import Knob from "./js/Knob";
 
 export {
    MaterialSwitch,
@@ -11,5 +12,6 @@ export {
    Button,
    ToggleButtons,
    ImageToggleButton,
-   TextToggleButton
+   TextToggleButton,
+   Knob
 };

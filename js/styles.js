@@ -11,7 +11,7 @@ function create() {
    
    styles.button = {
       container: {
-         ...centerCenter,
+         ...styles.centerCenter,
          height: styles.baseHeight,
          backgroundColor: 0x0099CBFF
       },
@@ -32,7 +32,7 @@ function create() {
       $button: {
          container: {
             inactive: {
-               ...centerCenter,
+               ...styles.centerCenter,
                paddingTop: styles.marginPadding * 0.5,
                paddingBottom: styles.marginPadding * 0.5,
                paddingLeft: styles.marginPadding,

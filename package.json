@@ -1,6 +1,6 @@
 {
   "name": "react-native-common-ui-components",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "UI components that are commonly used in RN projects.",
   "main": "index.js",
   "scripts": {

@@ -5,7 +5,7 @@ import {
    PanResponder
 } from "react-native";
 import { autobind } from "core-decorators";
-import { styles } from "react-native-common-utils/js/styles";
+import { styles } from "react-native-common-ui-components/js/styles";
 import {
    StaticUtils,
    AlterStyles
@@ -13,14 +13,33 @@ import {
 
 @autobind
 export default class Knob extends React.Component {
+   static defaultProps = {
+      min: {
+         value: 0,
+         angle: 270
+      },
+      max: {
+         value: 100,
+         angle: -90
+      },
+      decimals: 0,
+      distanceToValueCoeff: 10
+   };
+   
    constructor(props) {
       super(props);
       
       this.state = {
-         touched: false,
-         degrees: 0,
-         degreeOffset: 0
+         touched: false
       };
+      
+      this.state.rawValue = this.state.rawValueOffset =
+         this.props.initialValue || this.props.min.value;
+      
+      this.state.value = this._normalize(this.state.rawValue);
+      
+      this.angleToValueCoeff = (Math.abs(this.props.min.angle) + Math.abs(
+         this.props.max.angle)) / (this.props.max.value - this.props.min.value);
       
       this.panResponder = PanResponder.create({
          onStartShouldSetPanResponder: () => true,
@@ -50,23 +69,25 @@ export default class Knob extends React.Component {
    }
    
    render() {
-      const diff = this.styles.$radius - this.styles.$markerRadius;
-      const angle = -StaticUtils.deg2Rad(this.state.degrees);
+      const radiusDiff = this.styles.$radius - this.styles.$markerRadius;
+      
+      const angle = StaticUtils.deg2Rad(this.props.min.angle - this.
+         angleToValueCoeff * (this.state.rawValue - this.props.min.value));
       
       const container = [this.styles.container, {
          backgroundColor: this._getBackgroundColor()
       }];
       
       const marker = [this.styles.marker, {
-         left: diff + Math.cos(angle) * this.styles.$markerDistance,
-         top: diff - Math.sin(angle) * this.styles.$markerDistance
+         left: radiusDiff + Math.cos(angle) * this.styles.$markerDistance,
+         top: radiusDiff - Math.sin(angle) * this.styles.$markerDistance
       }];
       
       return <View style={container} { ...this.panResponder.panHandlers }>
          <View style={marker} />
-         <Text style={this.styles.valueText}>
-            {StaticUtils.round(this.state.degrees, 0)}</Text>
-         <Text style={this.styles.uomText}>deg</Text>
+         <Text style={this.styles.valueText}>{this.state.value}</Text>
+         { this.props.uom ? <Text style={this.styles.uomText}>
+            {this.props.uom}</Text> : null }
       </View>;
    }
    
@@ -75,14 +96,25 @@ export default class Knob extends React.Component {
    }
    
    _onMove(evt, gestureState) {
-      this.setState({degrees: this.state.degreeOffset + (this.
-         props.horizontal ? gestureState.dx : -gestureState.dy)});
+      const rawValue = StaticUtils.ensureBounds(this.state.rawValueOffset +
+         (this.props.horizontal ? gestureState.dx : -gestureState.dy) / this.props.
+            distanceToValueCoeff, this.props.min.value, this.props.max.value);
+      
+      const value = this._normalize(rawValue);
+      
+      if (this.props.onValueChange) {
+         if (this._normalize(this.state.rawValue) != value) {
+            this.props.onValueChange(value);
+         }
+      }
+      
+      this.setState({rawValue, value});
    }
    
    _onTouchSucceeded() {
       this.setState({
          touched: false,
-         degreeOffset: this.state.degrees
+         rawValueOffset: this.state.rawValue
       });
    }
    
@@ -95,5 +127,20 @@ export default class Knob extends React.Component {
          styles.knob._container.backgroundColor) & 0xFFFFFF00) | (this.state.
             touched ? StaticUtils.round(this.styles.$activeOpacity * 255, 0) :
                0xFF)) >>> 0;
+   }
+   
+   _normalize(value) {
+      let result = value;
+      
+      if (this.props.step) {
+         const prev = this.props.min.value + parseInt((result - this.
+            props.min.value) / this.props.step) * this.props.step;
+         
+         const next = prev + this.props.step;
+         
+         result = (result - prev) < (next - result) ? prev : next;
+      }
+      
+      return StaticUtils.round(result, this.props.decimals, true);;
    }
 }

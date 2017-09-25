@@ -18,6 +18,7 @@ Some UI components that are commonly used in RN projects.
 
 Version number|Changes
 -|-
+v1.2.1|[`Knob`](#knob) updated.
 v1.1.1|1.&nbsp;Fixed bugs in `styles.js`.<br>2.&nbsp;[`Knob`](#knob) updated.
 v1.1.0|1.&nbsp;Predefined [styles](https://npmjs.com/packages/react-native-common-utils#styles) for components are moved here from [react-native-common-utils](https://npmjs.com/packages/react-native-common-utils).<br>2.&nbsp;[`Knob`](#knob) is added.
 v1.0.0|Initial release.

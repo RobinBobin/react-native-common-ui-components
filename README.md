@@ -18,6 +18,7 @@
 
 Version number|Changes
 -|-
+v1.4.0|`buttonDisabled` style added.
 v1.3.0|[`Button`](#button) updated.
 v1.2.1|[`Knob`](#knob) updated.
 v1.1.1|1.&nbsp;Fixed bugs in `styles.js`.<br>2.&nbsp;[`Knob`](#knob) updated.

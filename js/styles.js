@@ -21,6 +21,14 @@ function create() {
          textAlign: "center"
       }
    };
+   
+   styles.buttonDisabled = {
+      container: {
+         backgroundColor: styles.textColorDisabled
+      },
+      text: {
+      }
+   };
 
    styles.toggleButtons = {
       container: {

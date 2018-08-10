@@ -5,27 +5,21 @@ import {
 } from "react-native";
 import { autobind } from "core-decorators";
 import { styles } from "react-native-common-ui-components/js/styles";
-import { AlterStyles } from "react-native-common-utils";
 
 @autobind
 export default class Button extends React.Component {
-   constructor(props) {
-      super(props);
-      
-      this.styles = [
-         AlterStyles.combineEx(this.props.styles, styles.button),
-         AlterStyles.combineEx(this.props.stylesDisabled, styles.buttonDisabled)
-      ];
-   }
-   
    render() {
       const stls = {};
       
       for (let name of ["container", "text"]) {
-         stls[name] = [];
+         stls[name] = [styles.button[name]];
          
-         for (let i = 0; i < this.styles.length - +!this.props.disabled; i++) {
-            stls[name].push(this.styles[i][name]);
+         if (this.props.disabled) {
+            stls[name].push(styles.buttonDisabled[name]);
+         }
+         
+         if (this.props.style) {
+            stls[name].push(this.props.style[name]);
          }
       }
       

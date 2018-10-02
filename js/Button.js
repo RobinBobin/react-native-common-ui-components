@@ -12,13 +12,7 @@ import {
 @autobind
 export default class Button extends React.Component {
    render() {
-      const preApply = this.props.disabled ? (stl, name) => {
-         if (styles.buttonDisabled[name]) {
-            stl[name].push(styles.buttonDisabled[name]);
-         }
-      } : null;
-      
-      const stl = combineStyles(styles.button, this.props.style, preApply);
+      const stl = combineStyles(styles.button, this.props.disabled ? styles.buttonDisabled : null, this.props.style);
       
       return <TouchableOpacity
          onPress={this.props.onPress || (() => alert(this.props.text))}

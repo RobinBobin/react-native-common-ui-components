@@ -65,31 +65,36 @@ function create() {
       $radius: 50,
       $markerDistance: 35,
       $markerRadius: 4,
-      $activeOpacity: styles.activeOpacity
+      $activeOpacity: styles.activeOpacity,
+      container: {
+         ...styles.centerCenter,
+         backgroundColor: "lightgreen",
+      },
+      marker: {
+         position: "absolute",
+         backgroundColor: "black"
+      },
+      valueText: {
+         fontSize: fontSize(font.largeSteps),
+         color: styles.textColor
+      },
+      uomText: {
+         fontSize: fontSize(font.mediumSteps),
+         color: styles.textColor
+      }
    };
    
-   styles.knob.container = {
-      ...styles.centerCenter,
-      backgroundColor: "lightgreen",
-   };
-   
-   styles.knob.marker = {
-      position: "absolute",
-      backgroundColor: "black"
-   };
-   
-   styles.knob.valueText = {
-      fontSize: fontSize(font.largeSteps),
-      color: styles.textColor
-   };
-   
-   styles.knob.uomText = {
-      fontSize: fontSize(font.mediumSteps),
-      color: styles.textColor
+   styles.knobDisabled = {
+      container: {
+         backgroundColor: styles.textColorDisabled,
+      },
+      marker: {
+         backgroundColor: 0x8F8A8AFF
+      }
    };
 }
 
-export function combineStyles(defaultStyle, runtimeStyle, preApplyRuntimeStyle) {
+export function combineStyles(defaultStyle, defaultDisabledStyle, runtimeStyle) {
    const stl = {};
    
    for (let name of Object.keys(defaultStyle)) {
@@ -97,10 +102,10 @@ export function combineStyles(defaultStyle, runtimeStyle, preApplyRuntimeStyle) 
       
       stl[name] = isVar ? defaultStyle[name] : [defaultStyle[name]];
       
-      preApplyRuntimeStyle && preApplyRuntimeStyle(stl, name);
-      
-      if (runtimeStyle && runtimeStyle[name]) {
-         isVar ? stl[name] = runtimeStyle[name] : stl[name].push(runtimeStyle[name]);
+      for (let i = 1; i < 3; i++) {
+         if (arguments[i] && arguments[i][name]) {
+            isVar ? stl[name] = arguments[i][name] : stl[name].push(arguments[i][name]);
+         }
       }
    }
    

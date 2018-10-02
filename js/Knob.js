@@ -38,10 +38,10 @@ export default class Knob extends React.Component {
          this.props.maxAngle)) / (this.props.maxValue - this.props.minValue);
       
       this.panResponder = PanResponder.create({
-         onStartShouldSetPanResponder: () => true,
-         onStartShouldSetPanResponderCapture: () => true,
-         onMoveShouldSetPanResponder: () => true,
-         onMoveShouldSetPanResponderCapture: () => true,
+         onStartShouldSetPanResponder: this._shouldSet,
+         onStartShouldSetPanResponderCapture: this._shouldSet,
+         onMoveShouldSetPanResponder: this._shouldSet,
+         onMoveShouldSetPanResponderCapture: this._shouldSet,
          onPanResponderGrant: this._onTouch,
          onPanResponderMove: this._onMove,
          onPanResponderRelease: this._onTouchSucceeded,
@@ -50,7 +50,7 @@ export default class Knob extends React.Component {
    }
    
    render() {
-      const stl = combineStyles(styles.knob, this.props.style);
+      const stl = combineStyles(styles.knob, this.props.disabled ? styles.knobDisabled : null, this.props.style);
       
       [
          ["container", "$radius"],
@@ -89,6 +89,10 @@ export default class Knob extends React.Component {
          { this.props.uom ? <Text style={stl.uomText}>
             {this.props.uom}</Text> : null }
       </View>;
+   }
+   
+   _shouldSet() {
+      return !this.props.disabled
    }
    
    _onTouch() {

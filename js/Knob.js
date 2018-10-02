@@ -5,11 +5,11 @@ import {
    PanResponder
 } from "react-native";
 import { autobind } from "core-decorators";
-import { styles } from "react-native-common-ui-components/js/styles";
 import {
-   StaticUtils,
-   AlterStyles
-} from "react-native-common-utils";
+   styles,
+   combineStyles
+} from "react-native-common-ui-components/js/styles";
+import { StaticUtils } from "react-native-common-utils";
 
 @autobind
 export default class Knob extends React.Component {
@@ -47,42 +47,46 @@ export default class Knob extends React.Component {
          onPanResponderRelease: this._onTouchSucceeded,
          onPanResponderTerminate: this._onTouchFailed
       });
-      
-      this.styles = AlterStyles.combineEx(this.props.styles, styles.knob);
+   }
+   
+   render() {
+      const stl = combineStyles(styles.knob, this.props.style);
       
       [
          ["container", "$radius"],
          ["marker", "$markerRadius"]
       ].forEach(data => {
-         const radius = this.styles[data[1]];
+         const borderRadius = stl[data[1]];
          
-         this.styles[data[0]][0].push({
-            width: radius * 2,
-            height: radius * 2,
-            borderRadius: radius
+         stl[data[0]].push({
+            width: borderRadius * 2,
+            height: borderRadius * 2,
+            borderRadius
          });
       });
-   }
-   
-   render() {
-      const radiusDiff = this.styles.$radius - this.styles.$markerRadius;
+      
+      const container = {
+         opacity: this.state.touched ? stl.$activeOpacity : undefined
+      };
+      
+      this._rawValueToBackgroundColor(container);
+      
+      stl.container.push(container);
+      
+      const radiusDiff = stl.$radius - stl.$markerRadius;
       
       const angle = StaticUtils.deg2Rad(this.props.minAngle - this.
          angleToValueCoeff * (this.state.rawValue - this.props.minValue));
       
-      const container = [this.styles.container, {
-         backgroundColor: this._getBackgroundColor()
-      }];
+      stl.marker.push({
+         left: radiusDiff + Math.cos(angle) * stl.$markerDistance,
+         top: radiusDiff - Math.sin(angle) * stl.$markerDistance
+      });
       
-      const marker = [this.styles.marker, {
-         left: radiusDiff + Math.cos(angle) * this.styles.$markerDistance,
-         top: radiusDiff - Math.sin(angle) * this.styles.$markerDistance
-      }];
-      
-      return <View style={container} { ...this.panResponder.panHandlers }>
-         <View style={marker} />
-         <Text style={this.styles.valueText}>{this.state.value}</Text>
-         { this.props.uom ? <Text style={this.styles.uomText}>
+      return <View style={stl.container} { ...this.panResponder.panHandlers }>
+         <View style={stl.marker} />
+         <Text style={stl.valueText}>{this.state.value}</Text>
+         { this.props.uom ? <Text style={stl.uomText}>
             {this.props.uom}</Text> : null }
       </View>;
    }
@@ -93,8 +97,7 @@ export default class Knob extends React.Component {
    
    _onMove(evt, gestureState) {
       const rawValue = StaticUtils.ensureBounds(this.state.rawValueOffset +
-         (this.props.horizontal ? gestureState.dx : -gestureState.dy) / this.props.
-            distanceToValueCoeff, this.props.minValue, this.props.maxValue);
+         (this.props.horizontal ? gestureState.dx : -gestureState.dy) / this.props.distanceToValueCoeff, this.props.minValue, this.props.maxValue);
       
       const value = this._normalize(rawValue);
       
@@ -118,34 +121,26 @@ export default class Knob extends React.Component {
       this.setState({touched: false});
    }
    
-   _getBackgroundColor() {
-      let color;
-      
-      if (!this.props.rawValueToBackgroundColor) {
-         color = StaticUtils.color(this.styles.container[0][1].
-            backgroundColor || styles.knob._container.backgroundColor);
-      } else if (typeof this.props.rawValueToBackgroundColor == "function") {
-         color = this.props.rawValueToBackgroundColor(this.state.rawValue);
-      } else {
-         switch (this.props.rawValueToBackgroundColor) {
-            case "greenred": {
-               const value = 255 / (this.props.maxValue - this.props.
-                  minValue) * (this.state.rawValue - this.props.minValue);
-               
-               color = ((StaticUtils.round(value, 0) << 24) |
-                  (StaticUtils.round(255 - value, 0) << 16) | 0xFF) >>> 0;
-               
-               break;
+   _rawValueToBackgroundColor(container) {
+      if (this.props.rawValueToBackgroundColor !== undefined) {
+         let color;
+         
+         if (typeof this.props.rawValueToBackgroundColor == "function") {
+            color = this.props.rawValueToBackgroundColor(this.state.rawValue);
+         } else {
+            switch (this.props.rawValueToBackgroundColor) {
+               case "greenred": {
+                  const value = 255 / (this.props.maxValue - this.props.minValue) * (this.state.rawValue - this.props.minValue);
+                 
+                  color = ((StaticUtils.round(value, 0) << 24) | (StaticUtils.round(255 - value, 0) << 16) | 0xFF) >>> 0;
+                  
+                  break;
+               }
             }
          }
+         
+         container.backgroundColor = color;
       }
-      
-      if (this.state.touched) {
-         color = ((color & 0xFFFFFF00) | StaticUtils.round(
-            this.styles.$activeOpacity * 255, 0)) >>> 0;
-      }
-      
-      return color;
    }
    
    _normalize(value) {

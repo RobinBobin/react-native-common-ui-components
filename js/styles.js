@@ -25,8 +25,6 @@ function create() {
    styles.buttonDisabled = {
       container: {
          backgroundColor: styles.textColorDisabled
-      },
-      text: {
       }
    };
 
@@ -89,6 +87,24 @@ function create() {
       fontSize: fontSize(font.mediumSteps),
       color: styles.textColor
    };
+}
+
+export function combineStyles(defaultStyle, runtimeStyle, preApplyRuntimeStyle) {
+   const stl = {};
+   
+   for (let name of Object.keys(defaultStyle)) {
+      const isVar = defaultStyle[name].constructor != Object;
+      
+      stl[name] = isVar ? defaultStyle[name] : [defaultStyle[name]];
+      
+      preApplyRuntimeStyle && preApplyRuntimeStyle(stl, name);
+      
+      if (runtimeStyle && runtimeStyle[name]) {
+         isVar ? stl[name] = runtimeStyle[name] : stl[name].push(runtimeStyle[name]);
+      }
+   }
+   
+   return stl;
 }
 
 export {

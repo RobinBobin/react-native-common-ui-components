@@ -1,7 +1,7 @@
 import React, { PropTypes } from "react";
 import { View } from "react-native";
 
-export default class ProgressBar extends React.Component {
+export default class ProgressBar extends React.PureComponent {
    static defaultProps = {
       // = background props = //
       flex: 1,
@@ -29,8 +29,6 @@ export default class ProgressBar extends React.Component {
       };
       
       const size = row ? "height" : "width";
-      
-      progressStyle[size] = this.props.size - 2 * this.props.borderThickness;
       
       if (row) {
          progressStyle[`borderTop${reverse ? "Right" : "Left"}Radius`] = this.props.borderRadius;

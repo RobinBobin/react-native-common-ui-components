@@ -3,7 +3,6 @@ import { View } from "react-native";
 
 export default class ProgressBar extends React.PureComponent {
    static defaultProps = {
-      // = background props = //
       flex: 1,
       flexDirection: "row",
       size: 15,
@@ -20,6 +19,15 @@ export default class ProgressBar extends React.PureComponent {
    };
    
    render() {
+      const stls = this._createStyles();
+      
+      return <View style={[this.props.style, stls.containerStyle]}>
+         <View style={stls.progressStyle} />
+         <View style={stls.remainingStyle} />
+      </View>;
+   }
+   
+   _createStyles() {
       const row = this.props.flexDirection.indexOf("row") != -1;
       const reverse = this.props.flexDirection.indexOf("reverse") != -1;
       
@@ -65,7 +73,7 @@ export default class ProgressBar extends React.PureComponent {
          remainingStyle.borderBottomRightRadius = progressStyle.borderTopRightRadius;
       }
       
-      return <View style={[this.props.style, {
+      const containerStyle = {
          flex: this.props.flex,
          flexDirection: this.props.flexDirection,
          height: row ? this.props.size : undefined,
@@ -73,9 +81,12 @@ export default class ProgressBar extends React.PureComponent {
          borderRadius: this.props.borderRadius,
          borderWidth: this.props.borderThickness,
          borderColor: this.props.borderColor
-      }]}>
-         <View style={progressStyle} />
-         <View style={remainingStyle} />
-      </View>
+      };
+      
+      return {
+         containerStyle,
+         progressStyle,
+         remainingStyle
+      };
    }
 }

@@ -21,9 +21,9 @@ export default class ProgressBar extends React.PureComponent {
    render() {
       const stls = this._createStyles();
       
-      return <View style={[this.props.style, stls.containerStyle]}>
-         <View style={stls.progressStyle} />
-         <View style={stls.remainingStyle} />
+      return <View style={[this.props.style, stls.container]}>
+         <View style={stls.progress} />
+         <View style={stls.remaining} />
       </View>;
    }
    
@@ -31,7 +31,7 @@ export default class ProgressBar extends React.PureComponent {
       const row = this.props.flexDirection.indexOf("row") != -1;
       const reverse = this.props.flexDirection.indexOf("reverse") != -1;
       
-      const progressStyle = {
+      const progress = {
          flex: this.props.progress,
          backgroundColor: this.props.progressColor
       };
@@ -39,41 +39,41 @@ export default class ProgressBar extends React.PureComponent {
       const size = row ? "height" : "width";
       
       if (row) {
-         progressStyle[`borderTop${reverse ? "Right" : "Left"}Radius`] = this.props.borderRadius;
+         progress[`borderTop${reverse ? "Right" : "Left"}Radius`] = this.props.borderRadius;
          
-         progressStyle[`borderBottom${reverse ? "Right" :"Left"}Radius`] = this.props.borderRadius;
+         progress[`borderBottom${reverse ? "Right" :"Left"}Radius`] = this.props.borderRadius;
       } else {
-         progressStyle[`border${reverse ? "Bottom" : "Top"}LeftRadius`] = this.props.borderRadius;
+         progress[`border${reverse ? "Bottom" : "Top"}LeftRadius`] = this.props.borderRadius;
          
-         progressStyle[`border${reverse ? "Bottom" : "Top"}RightRadius`] = this.props.borderRadius;
+         progress[`border${reverse ? "Bottom" : "Top"}RightRadius`] = this.props.borderRadius;
       }
       
-      const remainingStyle = {
+      const remaining = {
          flex: 1 - this.props.progress,
          backgroundColor: this.props.remainingColor,
       };
       
-      remainingStyle[size] = progressStyle[size];
+      remaining[size] = progress[size];
       
       if (row) {
-         remainingStyle.borderTopLeftRadius = progressStyle.borderTopRightRadius;
+         remaining.borderTopLeftRadius = progress.borderTopRightRadius;
          
-         remainingStyle.borderBottomLeftRadius = progressStyle.borderBottomRightRadius;
+         remaining.borderBottomLeftRadius = progress.borderBottomRightRadius;
          
-         remainingStyle.borderTopRightRadius = progressStyle.borderTopLeftRadius;
+         remaining.borderTopRightRadius = progress.borderTopLeftRadius;
          
-         remainingStyle.borderBottomRightRadius = progressStyle.borderBottomLeftRadius;
+         remaining.borderBottomRightRadius = progress.borderBottomLeftRadius;
       } else {
-         remainingStyle.borderTopLeftRadius = progressStyle.borderBottomLeftRadius;
+         remaining.borderTopLeftRadius = progress.borderBottomLeftRadius;
          
-         remainingStyle.borderTopRightRadius = progressStyle.borderBottomRightRadius;
+         remaining.borderTopRightRadius = progress.borderBottomRightRadius;
          
-         remainingStyle.borderBottomLeftRadius = progressStyle.borderTopLeftRadius;
+         remaining.borderBottomLeftRadius = progress.borderTopLeftRadius;
          
-         remainingStyle.borderBottomRightRadius = progressStyle.borderTopRightRadius;
+         remaining.borderBottomRightRadius = progress.borderTopRightRadius;
       }
       
-      const containerStyle = {
+      const container = {
          flex: this.props.flex,
          flexDirection: this.props.flexDirection,
          height: row ? this.props.size : undefined,
@@ -84,9 +84,9 @@ export default class ProgressBar extends React.PureComponent {
       };
       
       return {
-         containerStyle,
-         progressStyle,
-         remainingStyle
+         container,
+         progress,
+         remaining
       };
    }
 }

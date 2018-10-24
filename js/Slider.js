@@ -70,12 +70,27 @@ export default class Slider extends React.PureComponent {
    
    _onLayout() {
       this._ref.current.measureInWindow((x, y, width, height) => {
-         this._layout = {
+         const slider = {
             x0: x,
             y0: y,
-            range: this._row ? width: height,
             x1: x + width,
             y1: y + height
+         };
+         
+         const min = slider[`${this._row ? "x" : "y"}0`] + this.props.thumbDiameter / 2;
+         
+         const max = min + (this._row ? width : height) - this.props.thumbDiameter;
+         
+         const progress = {
+            min,
+            max,
+            range: max - min,
+            minValueCoord: this._reverse ? max : min
+         };
+         
+         this._layout = {
+            slider,
+            progress
          };
          
          this.forceUpdate();
@@ -97,9 +112,8 @@ export default class Slider extends React.PureComponent {
          position: "absolute",
          width: this.props.thumbDiameter,
          height: this.props.thumbDiameter,
-         [offsetName]: (this._layout ? this._layout.range * this.state.progress : 0) - this.props.thumbDiameter * this.state.progress,
+         [offsetName]: this._layout ? this._layout.progress.range * this.state.progress : 0,
          borderRadius: this.props.thumbDiameter / 2,
-         
          backgroundColor: this.props.thumbColor
       };
       
@@ -127,15 +141,13 @@ export default class Slider extends React.PureComponent {
       const pageX = event.nativeEvent.changedTouches[changedTouchIndex].pageX;
       const pageY = event.nativeEvent.changedTouches[changedTouchIndex].pageY;
       
-      return pageX >= this._layout.x0 && pageX <= this._layout.x1 && pageY >= this._layout.y0 && pageY <= this._layout.y1;
+      return pageX >= this._layout.slider.x0 && pageX <= this._layout.slider.x1 && pageY >= this._layout.slider.y0 && pageY <= this._layout.slider.y1;
    }
    
    _updateProgress({pageX, pageY}) {
-      const xOrY = this._row ? "x" : "y";
+      const coord = StaticUtils.ensureBounds(this._row ? pageX : pageY, this._layout.progress.min, this._layout.progress.max);
       
-      const coord = StaticUtils.ensureBounds(this._row ? pageX : pageY, this._layout[`${xOrY}0`], this._layout[`${xOrY}1`]);
-      
-      this._setProgress(Math.abs(coord - this._layout[`${xOrY}${+this._reverse}`]) / this._layout.range);
+      this._setProgress(Math.abs(coord - this._layout.progress.minValueCoord) / this._layout.progress.range);
    }
    
    _onPanResponderStart(event) {

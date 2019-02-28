@@ -18,6 +18,7 @@ export default class Button extends React.Component {
          onPress={this.props.onPress || (() => alert(this.props.text))}
          disabled={this.props.disabled}
          activeOpacity={styles.activeOpacity}
+         onLayout={this.props.onLayout}
          style={stl.container}>
          { this.props.text && <Text style={stl.text}>{this.props.text}</Text> }
          { this.props.children }

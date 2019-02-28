@@ -83,7 +83,10 @@ export default class Knob extends React.Component {
          top: radiusDiff - Math.sin(angle) * stl.$markerDistance
       });
       
-      return <View style={stl.container} { ...this.panResponder.panHandlers }>
+      return <View
+         style={stl.container}
+         onLayout={this.props.onLayout}
+         { ...this.panResponder.panHandlers }>
          <View style={stl.marker} />
          <Text style={stl.valueText}>{this.state.value}</Text>
          { this.props.uom ? <Text style={stl.uomText}>

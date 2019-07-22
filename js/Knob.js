@@ -49,6 +49,10 @@ export default class Knob extends React.Component {
       });
    }
    
+   setValue(value) {
+      this._setValue(value, false);
+   }
+   
    render() {
       const stl = combineStyles(styles.knob, this.props.disabled ? styles.knobDisabled : null, this.props.style);
       
@@ -103,18 +107,7 @@ export default class Knob extends React.Component {
    }
    
    _onMove(evt, gestureState) {
-      const rawValue = StaticUtils.ensureBounds(this.state.rawValueOffset +
-         (this.props.horizontal ? gestureState.dx : -gestureState.dy) / this.props.distanceToValueCoeff, this.props.minValue, this.props.maxValue);
-      
-      const value = this._normalize(rawValue);
-      
-      if (this.props.onValueChange) {
-         if (this._normalize(this.state.rawValue) != value) {
-            this.props.onValueChange(value);
-         }
-      }
-      
-      this.setState({rawValue, value});
+      this._setValue(this.state.rawValueOffset + (this.props.horizontal ? gestureState.dx : -gestureState.dy) / this.props.distanceToValueCoeff, true);
    }
    
    _onTouchSucceeded() {
@@ -148,6 +141,18 @@ export default class Knob extends React.Component {
          
          container.backgroundColor = color;
       }
+   }
+   
+   _setValue(newValue, fromUi) {
+      const rawValue = StaticUtils.ensureBounds(newValue, this.props.minValue, this.props.maxValue);
+      
+      const value = this._normalize(rawValue);
+      
+      if (this.props.onValueChange && this.state.value != value) {
+         this.props.onValueChange(value, fromUi);
+      }
+      
+      this.setState({rawValue, value});
    }
    
    _normalize(value) {

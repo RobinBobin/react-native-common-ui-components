@@ -1,7 +1,6 @@
 import React from "react";
 import { View } from "react-native";
 import { styles } from "react-native-common-utils/js/styles";
-import { AlterStyles } from "react-native-common-utils";
 
 export default class ToggleButtons extends React.Component {
    constructor(props) {
@@ -24,10 +23,10 @@ export default class ToggleButtons extends React.Component {
       const clone = child => React.cloneElement(
          child, {index: child.key, parent: this});
       
-      return <View style={AlterStyles.combine(this.props.styles,
-         [[styles.toggleButtons._container, "container"]]).container}>
-         {Array.isArray(this.props.children) ? this.props.children.
-            map(child => clone(child)) : clone(this.props.children)}
-      </View>
+      // return <View style={Alter Styles.combine(this.props.styles,
+      //    [[styles.toggleButtons._container, "container"]]).container}>
+      //    {Array.isArray(this.props.children) ? this.props.children.
+      //       map(child => clone(child)) : clone(this.props.children)}
+      // </View>
    }
 }

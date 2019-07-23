@@ -1,9 +1,6 @@
 import React from "react";
 import { styles } from "react-native-common-utils/js/styles";
-import {
-   AlterStyles,
-   StaticUtils
-} from "react-native-common-utils";
+import { StaticUtils } from "react-native-common-utils";
 import ToggleButton from "./ToggleButton";
 
 export default class SimpleToggleButton extends React.Component {
@@ -17,7 +14,7 @@ export default class SimpleToggleButton extends React.Component {
             container.active, "container.active"]);
       }
       
-      return <ToggleButton {...this.props} style={StaticUtils.objectToArray(
-         AlterStyles.combine(this.props.styles, stylesData).container)} />
+      // return <ToggleButton {...this.props} style={StaticUtils.objectToArray(
+         // Alter Styles.combine(this.props.styles, stylesData).container)} />
    }
 }

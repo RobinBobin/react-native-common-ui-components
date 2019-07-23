@@ -1,10 +1,7 @@
 import React from "react";
 import { Text } from "react-native";
 import { styles } from "react-native-common-utils/js/styles";
-import {
-   AlterStyles,
-   StaticUtils
-} from "react-native-common-utils";
+import { StaticUtils } from "react-native-common-utils";
 import SimpleToggleButton from "./SimpleToggleButton";
 
 export default class TextToggleButton extends React.Component {
@@ -18,10 +15,10 @@ export default class TextToggleButton extends React.Component {
             label.active, "label.active"]);
       }
       
-      return <SimpleToggleButton {...this.props}>
-         <Text style={StaticUtils.objectToArray(AlterStyles.combine(
-            this.props.styles, stylesData).label)}>{this.props.value}</Text>
-      </SimpleToggleButton>;
+      // return <SimpleToggleButton {...this.props}>
+      //    <Text style={StaticUtils.objectToArray(Alter Styles.combine(
+      //       this.props.styles, stylesData).label)}>{this.props.value}</Text>
+      // </SimpleToggleButton>;
    }
    
    _fillStylesData(stylesData) {

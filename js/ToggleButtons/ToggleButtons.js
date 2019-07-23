@@ -1,10 +1,8 @@
 import React from "react";
 import { View } from "react-native";
-import { autobind } from "core-decorators";
 import { styles } from "react-native-common-utils/js/styles";
 import { AlterStyles } from "react-native-common-utils";
 
-@autobind
 export default class ToggleButtons extends React.Component {
    constructor(props) {
       super(props);

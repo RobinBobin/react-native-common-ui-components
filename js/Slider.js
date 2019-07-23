@@ -1,10 +1,11 @@
 import React from "react";
 import { View } from "react-native";
-import { autobind } from "core-decorators";
 import { StaticUtils } from "simple-common-utils";
 import ProgressBar from "./ProgressBar";
 
-@autobind
+/**
+ * To be used with TouchContainer.
+ */
 export default class Slider extends React.PureComponent {
    static defaultProps = {
       sliderFlex: 0,
@@ -53,7 +54,7 @@ export default class Slider extends React.PureComponent {
       return <View
          style={stls.container}
          ref={this._ref}
-         onLayout={this._onLayout}>
+         onLayout={this._onLayout.bind(this)}>
          <ProgressBar
             flex={this.props.progressBarFlex}
             flexDirection={this.props.flexDirection}
@@ -137,6 +138,9 @@ export default class Slider extends React.PureComponent {
       }
    }
    
+   /**
+    * Invoked by TouchContainer.
+    */
    _shouldHandleTouch(event, changedTouchIndex) {
       const pageX = event.nativeEvent.changedTouches[changedTouchIndex].pageX;
       const pageY = event.nativeEvent.changedTouches[changedTouchIndex].pageY;

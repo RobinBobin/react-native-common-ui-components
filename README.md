@@ -1,4 +1,4 @@
-﻿UI components that are commonly used in RN projects.
+﻿UI components that are commonly used in RN projects. One day it will be commented properly.
 
 ### Usage
 
@@ -18,6 +18,7 @@
 
 Version number|Changes
 -|-
+v2.0.0|1. `core-decorators` and `@autobind` are no longer used.<br>2. Really lots of stuff changed.
 v1.4.0|`buttonDisabled` style added.
 v1.3.0|[`Button`](#button) updated.
 v1.2.1|[`Knob`](#knob) updated.

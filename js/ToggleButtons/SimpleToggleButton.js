@@ -1,5 +1,4 @@
 import React from "react";
-import { autobind } from "core-decorators";
 import { styles } from "react-native-common-utils/js/styles";
 import {
    AlterStyles,
@@ -7,7 +6,6 @@ import {
 } from "react-native-common-utils";
 import ToggleButton from "./ToggleButton";
 
-@autobind
 export default class SimpleToggleButton extends React.Component {
    render() {
       const stylesData = [

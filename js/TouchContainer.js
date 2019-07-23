@@ -3,10 +3,8 @@ import {
    View,
    PanResponder
 } from "react-native";
-import { autobind } from "core-decorators";
 import { StaticUtils } from "react-native-common-utils";
 
-@autobind
 export default class TouchContainer extends React.PureComponent {
    static defaultProps = {
       moveDecimals: 1
@@ -35,6 +33,10 @@ export default class TouchContainer extends React.PureComponent {
       ].reduce((p, c) => {
          p[c] = this[`_${c}`];
          
+         if (p[c]) {
+            p[c] = p[c].bind(this);
+         }
+         
          return p;
       }, {}));
    }
@@ -44,7 +46,7 @@ export default class TouchContainer extends React.PureComponent {
          style={this.props.style}
          { ...this._panResponder.panHandlers }>
          { React.Children.map(this.props.children, (child, index) => React.cloneElement(child, {
-               setInstance: this._setChildInstance.bind(null, index)
+               setInstance: this._setChildInstance.bind(this, index)
             })) }
       </View>;
    }

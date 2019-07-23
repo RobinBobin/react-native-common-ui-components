@@ -4,14 +4,12 @@ import {
    Text,
    PanResponder
 } from "react-native";
-import { autobind } from "core-decorators";
 import {
    styles,
    combineStyles
 } from "react-native-common-ui-components/js/styles";
 import { StaticUtils } from "react-native-common-utils";
 
-@autobind
 export default class Knob extends React.Component {
    static defaultProps = {
       minValue: 0,
@@ -38,14 +36,14 @@ export default class Knob extends React.Component {
          this.props.maxAngle)) / (this.props.maxValue - this.props.minValue);
       
       this.panResponder = PanResponder.create({
-         onStartShouldSetPanResponder: this._shouldSet,
-         onStartShouldSetPanResponderCapture: this._shouldSet,
-         onMoveShouldSetPanResponder: this._shouldSet,
-         onMoveShouldSetPanResponderCapture: this._shouldSet,
-         onPanResponderGrant: this._onTouch,
-         onPanResponderMove: this._onMove,
-         onPanResponderRelease: this._onTouchSucceeded,
-         onPanResponderTerminate: this._onTouchFailed
+         onStartShouldSetPanResponder: this._shouldSet.bind(this),
+         onStartShouldSetPanResponderCapture: this._shouldSet.bind(this),
+         onMoveShouldSetPanResponder: this._shouldSet.bind(this),
+         onMoveShouldSetPanResponderCapture: this._shouldSet.bind(this),
+         onPanResponderGrant: this._onTouch.bind(this),
+         onPanResponderMove: this._onMove.bind(this),
+         onPanResponderRelease: this._onTouchSucceeded.bind(this),
+         onPanResponderTerminate: this._onTouchFailed.bind(this)
       });
    }
    

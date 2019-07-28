@@ -1,5 +1,8 @@
 import React from "react";
-import { View } from "react-native";
+import {
+   findNodeHandle,
+   View
+} from "react-native";
 import { StaticUtils } from "simple-common-utils";
 import ProgressBar from "./ProgressBar";
 
@@ -69,8 +72,21 @@ export default class Slider extends React.PureComponent {
       </View>;
    }
    
-   _onLayout() {
-      this._ref.current.measureInWindow((x, y, width, height) => {
+   async _onLayout() {
+      try {
+         let {x, y, width, height} = await new Promise((rslv, rjct) => {
+            const handle = findNodeHandle(this.props.refData.ref.current);
+            
+            const success = (x, y, width, height) => {
+               rslv({x, y, width, height});
+            };
+            
+            this._ref.current.measureLayout(handle, success, rjct);
+         });
+         
+         x += this.props.refData.marginLeft || 0;
+         y += this.props.refData.marginTop || 0;
+         
          const slider = {
             x0: x,
             y0: y,
@@ -95,7 +111,9 @@ export default class Slider extends React.PureComponent {
          };
          
          this.forceUpdate();
-      });
+      } catch (e) {
+         console.log(e.message);
+      }
    }
    
    _createStyles() {

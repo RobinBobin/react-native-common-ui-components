@@ -46,6 +46,7 @@ export default class TouchContainer extends React.PureComponent {
          style={this.props.style}
          { ...this._panResponder.panHandlers }>
          { React.Children.map(this.props.children, (child, index) => React.cloneElement(child, {
+               refData: this.props.refData,
                setInstance: this._setChildInstance.bind(this, index)
             })) }
       </View>;
@@ -131,7 +132,7 @@ export default class TouchContainer extends React.PureComponent {
                const changedTouch = event.nativeEvent.changedTouches[i];
                
                const touchIdentifierIndex = child.touchIdentifiers.indexOf(changedTouch.identifier);
-            
+               
                if (touchIdentifierIndex != -1) {
                   let skip = false;
                   

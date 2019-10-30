@@ -15,8 +15,8 @@ export default class Button extends React.Component {
       const props = {...this.props};
       
       for (data of [
-         ["onPress", () => alert(this.props.text)],
-         ["onLongPress", () => alert(`${this.props.text} (long)`)]
+         ["onPress", () => __DEV__ && alert(this.props.text)],
+         ["onLongPress", () => __DEV__ && alert(`${this.props.text} (long)`)]
       ]) {
          if (!props[data[0]]) {
             props[data[0]] = data[1];

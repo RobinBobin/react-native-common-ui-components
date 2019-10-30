@@ -18,6 +18,7 @@
 
 Version number|Changes
 -|-
+v2.1.0|`Button.onPress() / onLongPress()` - alert only in the DEV-mode.
 v2.0.2|`TouchContainer` / `Slider` can be used inside scrollable views.
 v2.0.1|References to `AlterStyles` removed from toggle buttons classes.
 v2.0.0|1. `core-decorators` and `@autobind` are no longer used.<br>2. Really lots of stuff changed.

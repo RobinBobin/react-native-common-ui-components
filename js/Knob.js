@@ -14,6 +14,7 @@ export default class Knob extends React.Component {
    static defaultProps = {
       minValue: 0,
       maxValue: 100,
+      initialValue: 0,
       minAngle: 270,
       maxAngle: -90,
       decimals: 0,
@@ -71,14 +72,16 @@ export default class Knob extends React.Component {
          opacity: this.state.touched ? stl.$activeOpacity : undefined
       };
       
-      this._rawValueToBackgroundColor(container);
+      if (this.props.valueToBackgroundColor) {
+         this._valueToBackgroundColor(container);
+      }
       
       stl.container.push(container);
       
       const radiusDiff = stl.$radius - stl.$markerRadius;
       
       const angle = StaticUtils.deg2Rad(this.props.minAngle - this.
-         angleToValueCoeff * (this.state.rawValue - this.props.minValue));
+         angleToValueCoeff * ((this.props.snap ? this.state.value : this.state.rawValue) - this.props.minValue));
       
       stl.marker.push({
          left: radiusDiff + Math.cos(angle) * stl.$markerDistance,
@@ -119,26 +122,24 @@ export default class Knob extends React.Component {
       this.setState({touched: false});
    }
    
-   _rawValueToBackgroundColor(container) {
-      if (this.props.rawValueToBackgroundColor !== undefined) {
-         let color;
-         
-         if (typeof this.props.rawValueToBackgroundColor == "function") {
-            color = this.props.rawValueToBackgroundColor(this.state.rawValue);
-         } else {
-            switch (this.props.rawValueToBackgroundColor) {
-               case "greenred": {
-                  const value = 255 / (this.props.maxValue - this.props.minValue) * (this.state.rawValue - this.props.minValue);
-                 
-                  color = ((StaticUtils.round(value, 0) << 24) | (StaticUtils.round(255 - value, 0) << 16) | 0xFF) >>> 0;
-                  
-                  break;
-               }
+   _valueToBackgroundColor(container) {
+      let color;
+      
+      if (typeof this.props.valueToBackgroundColor == "function") {
+         color = this.props.valueToBackgroundColor(this.props.snap ? this.state.value : this.state.rawValue);
+      } else {
+         switch (this.props.valueToBackgroundColor) {
+            case "greenred": {
+               const value = 255 / (this.props.maxValue - this.props.minValue) * ((this.props.snap ? this.state.value : this.state.rawValue) - this.props.minValue);
+               
+               color = ((StaticUtils.round(value, 0) << 24) | (StaticUtils.round(255 - value, 0) << 16) | 0xFF) >>> 0;
+               
+               break;
             }
          }
-         
-         container.backgroundColor = color;
       }
+      
+      container.backgroundColor = color;
    }
    
    _setValue(newValue, fromUi) {
@@ -146,11 +147,19 @@ export default class Knob extends React.Component {
       
       const value = this._normalize(rawValue);
       
+      let setState = true;
+      
       if (this.props.onValueChange && this.state.value != value) {
-         this.props.onValueChange(value, fromUi);
+         const result = this.props.onValueChange(value, fromUi);
+         
+         if (result != undefined) {
+            setState = result;
+         }
       }
       
-      this.setState({rawValue, value});
+      if (setState) {
+         this.setState({rawValue, value});
+      }
    }
    
    _normalize(value) {

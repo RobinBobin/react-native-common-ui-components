@@ -18,6 +18,7 @@
 
 Version number|Changes
 -|-
+v2.2.0|`Knob`:<br>1. `defaultProps.initialValue = 0`.<br>2. `props.snap` added.<br>3. The new value is ignored if the `onValueChange()` handler returns `false`.
 v2.1.0|`Button.onPress() / onLongPress()` - alert only in the DEV-mode.
 v2.0.2|`TouchContainer` / `Slider` can be used inside scrollable views.
 v2.0.1|References to `AlterStyles` removed from toggle buttons classes.

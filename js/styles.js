@@ -94,17 +94,23 @@ function create() {
    };
 }
 
-export function combineStyles(defaultStyle, defaultDisabledStyle, runtimeStyle) {
+export function combineStyles(/* defaultStyle, defaultDisabledStyle, runtimeStyle */) {
    const stl = {};
    
-   for (let name of Object.keys(defaultStyle)) {
-      const isVar = defaultStyle[name].constructor != Object;
+   for (let name of Object.keys(arguments[0])) {
+      const isVar = arguments[0][name].constructor != Object;
       
-      stl[name] = isVar ? defaultStyle[name] : [defaultStyle[name]];
+      stl[name] = isVar ? arguments[0][name] : [arguments[0][name]];
       
       for (let i = 1; i < 3; i++) {
-         if (arguments[i] && arguments[i][name]) {
-            isVar ? stl[name] = arguments[i][name] : stl[name].push(arguments[i][name]);
+         if (arguments[i]) {
+            if (Array.isArray(arguments[i])) {
+               for (const style of arguments[i]) {
+                  stl[name].push(style[name]);
+               }
+            } else if (arguments[i][name]) {
+               isVar ? stl[name] = arguments[i][name] : stl[name].push(arguments[i][name]);
+            }
          }
       }
    }

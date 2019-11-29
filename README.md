@@ -18,6 +18,7 @@
 
 Version number|Changes
 -|-
+v2.5.0|`combineStyles()` - `runtimeStyle` can be an array.
 v2.4.0|`Knob.componentDidUpdate()` - `initialValue` can be updated.
 v2.3.0|`Knob`: `onTouch() / onRelease()` handlers added.
 v2.2.0|`Knob`:<br>1. `defaultProps.initialValue = 0`.<br>2. `props.snap` added.<br>3. The new value is ignored if the `onValueChange()` handler returns `false`.

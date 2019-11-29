@@ -48,6 +48,16 @@ export default class Knob extends React.Component {
       });
    }
    
+   componentDidUpdate(prevProps) {
+      if (prevProps.initialValue != this.props.initialValue) {
+         const rawValue = StaticUtils.ensureBounds(this.props.initialValue, this.props.minValue, this.props.maxValue);
+         
+         const value = this._normalize(rawValue);
+         
+         this.setState({rawValue, value});
+      }
+   }
+   
    setValue(value) {
       this._setValue(value, false);
    }

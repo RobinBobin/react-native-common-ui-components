@@ -105,6 +105,8 @@ export default class Knob extends React.Component {
    
    _onTouch() {
       this.setState({touched: true});
+      
+      this.props.onTouch && this.props.onTouch();
    }
    
    _onMove(evt, gestureState) {
@@ -116,10 +118,14 @@ export default class Knob extends React.Component {
          touched: false,
          rawValueOffset: this.state.rawValue
       });
+      
+      this.props.onRelease && this.props.onRelease(true);
    }
    
    _onTouchFailed() {
       this.setState({touched: false});
+      
+      this.props.onRelease && this.props.onRelease(false);
    }
    
    _valueToBackgroundColor(container) {

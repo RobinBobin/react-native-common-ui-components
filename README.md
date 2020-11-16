@@ -18,6 +18,7 @@
 
 Version number|Changes
 -|-
+v2.6.0|<br>1. `Button` - bug fixed in `render()` (`data` wasn't defined).<br>2. README updated.
 v2.5.0|`combineStyles()` - `runtimeStyle` can be an array.
 v2.4.0|`Knob.componentDidUpdate()` - `initialValue` can be updated.
 v2.3.0|`Knob`: `onTouch() / onRelease()` handlers added.

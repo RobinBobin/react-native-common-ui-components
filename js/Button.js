@@ -14,7 +14,7 @@ export default class Button extends React.Component {
       
       const props = {...this.props};
       
-      for (data of [
+      for (const data of [
          ["onPress", () => __DEV__ && alert(this.props.text)],
          ["onLongPress", () => __DEV__ && alert(`${this.props.text} (long)`)]
       ]) {
